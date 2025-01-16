@@ -1,0 +1,51 @@
+---
+title: "NHANES_Exploring"
+output: html_document
+date: "2025-01-16"
+---
+
+```{r setup, include=FALSE}
+
+if (!require("pacman")) install.packages("pacman")
+
+pacman::p_load(multcomp, broom, data.table, cluster,gtsummary,gmodels, haven,
+               tidyverse, tableone,ggplot2,survey,
+              gridExtra,dplyr,scatterplot3d,
+              stargazer,Hmisc,ivreg, AER)
+
+```
+
+```{r}
+
+demo_files <- c("DEMO_I.XPT", "DEMO_J.XPT", "DEMO_P.XPT")
+
+fsq_files <- c("FSQ_I.XPT", "FSQ_J.XPT", "FSQ_P.XPT")
+
+inq_files <- c("INQ_I.XPT", "INQ_J.XPT", "INQ_P.XPT")
+
+rhq_files <- c("RHQ_I.XPT", "RHQ_J.XPT", "RHQ_P.XPT")
+
+
+
+# Function to read and label data
+read_and_label <- function(file) {
+  data <- read_xpt(file)
+  data$source_file <- file # Add a column to track the source file
+  return(data)
+}
+
+# Read and combine all DEMO files
+demo_data <- bind_rows(lapply(demo_files, read_and_label))
+
+# Read and combine all FSQ files
+fsq_data <- bind_rows(lapply(fsq_files, read_and_label))
+
+# Merge DEMO and FSQ data (by common columns, e.g., 'SEQN')
+merged_data <- inner_join(demo_files, fsq_files, by = "SEQN")
+
+
+
+
+
+
+```
